@@ -24,21 +24,18 @@ export const toHex = (color: {
   const hex =
     a === 1 ? `#${rHex}${gHex}${bHex}` : `#${rHex}${gHex}${bHex}${aHex}`;
 
-  console.log("hex", hex);
   return hex;
 };
 
 export const toRem = (px: number, base: number = 16) => {
   const rem = px / base;
-  console.log("rem:", rem);
   return `${rem}rem`;
 };
 
 export const parseValue = (
   value: ColorValue | number | string,
   type: string
-) => {
-  console.log("parseValue", value, type);
+): string => {
   switch (type) {
     case "COLOR": {
       const { r, g, b, a } = value as ColorValue;
@@ -52,6 +49,8 @@ export const parseValue = (
     case "FLOAT":
       return toRem(value as number);
     case "STRING":
-      return value;
+      return value as string;
+    default:
+      return String(value);
   }
 };
