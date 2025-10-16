@@ -26,7 +26,8 @@
 			"ui": "src/ui.ts",
 			"editorType": [
 				"figma",
-				"figjam"
+				"figjam",
+				"dev"
 			],
 			"networkAccess": {
 				"allowedDomains": [

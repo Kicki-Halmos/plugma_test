@@ -1,36 +1,39 @@
 // Read the docs https://plugma.dev/docs
 
 export default function () {
-	figma.showUI(__html__, { width: 300, height: 260, themeColors: true })
+  let cssCollections = [];
+  figma.showUI(__html__, { width: 300, height: 260, themeColors: true });
 
-	figma.ui.onmessage = (message) => {
-		if (message.type === 'CREATE_RECTANGLES') {
-			let i = 0
+  figma.ui.onmessage = async (message) => {
+    if (message.type === "CONVERT_VARIABLES") {
+      /*      figma.variables
+        .getLocalVariableCollectionsAsync()
+        .then((localVariables) => {
+          console.log("Local Variable Collections:", localVariables);
+        }); */
+      const collections =
+        await figma.variables.getLocalVariableCollectionsAsync();
+      console.log("collections", collections);
+      for (const collection of collections) {
+        for (const variableId of collection.variableIds) {
+          const variable =
+            await figma.variables.getVariableByIdAsync(variableId);
+          //console.log("variable", variable);
+          if (collection.name !== "Responsive") {
+            cssCollections.push({
+              collection: collection.name,
+              name: variable?.name,
+              value: variable?.valuesByMode,
+              type: variable?.resolvedType,
+              id: variable?.id,
+            });
+          }
+        }
+      }
 
-			let rectangles = []
-			while (i < message.count) {
-				const rect = figma.createRectangle()
-				rect.x = i * 150
-				rect.y = 0
-				rect.resize(100, 100)
-				rect.fills = [{ type: 'SOLID', color: { r: Math.random(), g: Math.random(), b: Math.random() } }] // Random color
-				rectangles.push(rect)
-
-				i++
-			}
-
-			figma.viewport.scrollAndZoomIntoView(rectangles)
-		}
-	}
-
-	function postNodeCount() {
-		const nodeCount = figma.currentPage.selection.length
-
-		figma.ui.postMessage({
-			type: 'POST_NODE_COUNT',
-			count: nodeCount,
-		})
-	}
-
-	figma.on('selectionchange', postNodeCount)
+      console.log("cssCollections", cssCollections);
+      /*       const localVariables = await figma.variables.getLocalVariablesAsync();
+      console.log("localVariables", localVariables); */
+    }
+  };
 }
