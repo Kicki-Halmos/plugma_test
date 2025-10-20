@@ -228,8 +228,6 @@ export async function convertVariablesToCSS(): Promise<string> {
     // Format all theme groups into CSS
     const formattedCSS = formatThemeGroups(themeGroups);
 
-    console.log("Formatted CSS:\n", formattedCSS);
-
     return formattedCSS;
   } catch (error) {
     console.error("Error converting variables:", error);
