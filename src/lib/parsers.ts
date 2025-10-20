@@ -1,5 +1,8 @@
 import type { ColorValue } from "../types";
 
+/**
+ * Convert RGB color object to hex string
+ */
 export const toHex = (color: {
   a: number;
   b: number;
@@ -27,11 +30,17 @@ export const toHex = (color: {
   return hex;
 };
 
+/**
+ * Convert pixels to rem units
+ */
 export const toRem = (px: number, base: number = 16) => {
   const rem = px / base;
   return `${rem}rem`;
 };
 
+/**
+ * Parse a variable value based on its type
+ */
 export const parseValue = (
   value: ColorValue | number | string,
   type: string
