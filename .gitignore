@@ -1,24 +1,55 @@
+# ========================
+# Node dependencies
+# ========================
+node_modules/
+**/node_modules/
+
+# ========================
+# pnpm store (optional)
+# ========================
+.pnpm-store/
+
+# ========================
 # Logs
-logs
-*.log
+# ========================
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+*.log
 
-node_modules
-dist
-dist-ssr
-*.local
+# ========================
+# Environment files
+# ========================
+.env
+**/.env
+.env.local
+.env.*.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# ========================
+# OS / Editor files
+# ========================
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ========================
+# Plugma / SvelteKit build outputs
+# ========================
+**/.plugma/
+**/dist/
+**/build/
+**/.svelte-kit/
+**/.vercel/
+**/.netlify/
+
+# ========================
+# Optional lock files
+# ========================
+# Uncomment if you want to ignore lock files
+# package-lock.json
+# pnpm-lock.yaml
+# yarn.lock
