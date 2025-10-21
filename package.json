@@ -2,7 +2,7 @@
   "name": "plugma_test",
   "private": true,
   "version": "1.0.0",
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@10.18.3",
   "scripts": {
     "dev:plugma": "pnpm --filter plugma run dev",
     "dev:server": "pnpm --filter server run dev",
@@ -17,4 +17,4 @@
       "plugma"
     ]
   }
-}
+} 
