@@ -1,10 +1,10 @@
 {
-  "name": "plugma_test",
+  "name": "figma-variables-sync",
   "private": true,
   "version": "1.0.0",
   "packageManager": "pnpm@10.18.3",
   "scripts": {
-    "dev:plugma": "pnpm --filter plugma run dev",
+    "dev:plugma": "pnpm --filter plugin run dev",
     "dev:server": "pnpm --filter server run dev",
     "dev": "concurrently \"pnpm run dev:plugma\" \"pnpm run dev:server\""
   },

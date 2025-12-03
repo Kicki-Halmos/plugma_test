@@ -1,5 +1,5 @@
 {
-	"name": "plugma",
+	"name": "plugin",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -23,7 +23,7 @@
 	},
 	"plugma": {
 		"manifest": {
-			"id": "plugma_test",
+			"id": "variables-sync-plugin",
 			"name": "plugma_test",
 			"main": "src/main.ts",
 			"ui": "src/ui.ts",
