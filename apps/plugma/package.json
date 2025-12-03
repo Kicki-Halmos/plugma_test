@@ -22,7 +22,7 @@
 	},
 	"plugma": {
 		"manifest": {
-			"id": "plugma_test-replace",
+			"id": "plugma_test",
 			"name": "plugma_test",
 			"main": "src/main.ts",
 			"ui": "src/ui.ts",

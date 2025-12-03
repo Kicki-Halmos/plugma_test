@@ -57,6 +57,7 @@ export const groupByType = (
  */
 export const formatCSSVariables = (
   variables: Array<{ name: string; value: string; type: string }>,
+
   themeName: string,
   customSuffix?: string
 ): string => {
@@ -121,10 +122,52 @@ export const formatCSSVariables = (
 };
 
 /**
+ * Format text styles into CSS classes
+ */
+export function formatTextStyles(textStyleMap: Map<string, TextStyle>): string {
+  if (textStyleMap.size === 0) return "";
+
+  const lines: string[] = ["/* Text Styles */"];
+
+  // Sort styles by name
+  const sortedStyles = Array.from(textStyleMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
+  sortedStyles.forEach((style) => {
+    const className = `.${style.name.toLowerCase().replace(/\//g, "-").replace(/\s+/g, "-")}`;
+    lines.push(`${className} {`);
+    lines.push(`  font-family: "${style.fontName.family}";`);
+    lines.push(`  font-weight: ${style.fontName.style};`);
+    lines.push(`  font-size: ${style.fontSize}px;`);
+
+    if (style.lineHeight.unit !== "AUTO") {
+      const unit = style.lineHeight.unit === "PIXELS" ? "px" : "%";
+      lines.push(`  line-height: ${style.lineHeight.value}${unit};`);
+    } else {
+      lines.push(`  line-height: normal;`);
+    }
+
+    if (style.letterSpacing.value !== 0) {
+      const unit = style.letterSpacing.unit === "PIXELS" ? "px" : "%";
+      lines.push(`  letter-spacing: ${style.letterSpacing.value}${unit};`);
+    }
+
+    lines.push(`}`);
+  });
+
+  return lines.join("\n");
+}
+
+/**
  * Format all theme groups into CSS blocks
  */
 export function formatThemeGroups(
-  themeGroups: Map<string, Array<{ name: string; value: string; type: string }>>
+  themeGroups: Map<
+    string,
+    Array<{ name: string; value: string; type: string }>
+  >,
+  textStyleMap?: Map<string, TextStyle>
 ): string {
   const cssBlocks: string[] = [];
 
@@ -166,6 +209,11 @@ export function formatThemeGroups(
     const vars = themeGroups.get(themeName)!;
     cssBlocks.push(formatCSSVariables(vars, themeName));
   });
+
+  // Format Text Styles if provided
+  if (textStyleMap && textStyleMap.size > 0) {
+    cssBlocks.push(formatTextStyles(textStyleMap));
+  }
 
   return cssBlocks.join("\n\n");
 }

@@ -161,10 +161,20 @@ function processResponsiveVariableGroups(
 /**
  * Fetch and process all Figma variable collections
  */
-export async function fetchAndProcessVariables(): Promise<
-  Map<string, Array<{ name: string; value: string; type: string }>>
-> {
+export async function fetchAndProcessVariables(): Promise<{
+  themeGroups: Map<
+    string,
+    Array<{ name: string; value: string; type: string }>
+  >;
+  textStyleMap: Map<string, TextStyle>;
+}> {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
+
+  const textStyles = await figma.getLocalTextStylesAsync();
+  const textStyleMap = new Map<string, TextStyle>();
+  textStyles.forEach((style) => textStyleMap.set(style.id, style));
+
+  console.log("Fetched Text Styles:", textStyleMap);
 
   const themeGroups = new Map<
     string,
@@ -212,7 +222,7 @@ export async function fetchAndProcessVariables(): Promise<
   // Process responsive variables: separate unchanging from mode-specific
   processResponsiveVariableGroups(responsiveVariableValues, themeGroups);
 
-  return themeGroups;
+  return { themeGroups, textStyleMap };
 }
 
 /**
@@ -223,10 +233,10 @@ export async function convertVariablesToCSS(): Promise<string> {
     const { formatThemeGroups } = await import("./formatters");
 
     // Fetch and process all variables from Figma
-    const themeGroups = await fetchAndProcessVariables();
+    const { themeGroups, textStyleMap } = await fetchAndProcessVariables();
 
     // Format all theme groups into CSS
-    const formattedCSS = formatThemeGroups(themeGroups);
+    const formattedCSS = formatThemeGroups(themeGroups, textStyleMap);
 
     return formattedCSS;
   } catch (error) {
