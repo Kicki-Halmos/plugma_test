@@ -92,18 +92,6 @@ export const POST: RequestHandler = (async ({ request }) => {
 		);
 	}
 
-	// Debug Private Key Format (without revealing secrets)
-	console.log('--- Private Key Debug ---');
-	console.log('Length:', PRIVATE_KEY.length);
-	console.log('Contains literal \\n:', GITHUB_APP_PRIVATE_KEY?.includes('\\n'));
-	console.log('Contains actual newline:', PRIVATE_KEY.includes('\n'));
-	console.log(
-		'Starts with Header:',
-		PRIVATE_KEY.trim().startsWith('-----BEGIN RSA PRIVATE KEY-----')
-	);
-	console.log('Ends with Footer:', PRIVATE_KEY.trim().endsWith('-----END RSA PRIVATE KEY-----'));
-	console.log('-------------------------');
-
 	try {
 		const app = new App({
 			appId: APP_ID,
