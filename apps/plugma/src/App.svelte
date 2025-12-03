@@ -39,7 +39,7 @@
           repo: repoName,
           content: variables
         })
-      });
+      }); 
 
       const data = await response.json();
 
@@ -49,7 +49,6 @@
         prStatus = `Error: ${data.error || 'Failed to create PR'}`;
       }
     } catch (error) {
-      console.log('Error creating PR:', error);
       prStatus = `Error connecting to server: ${error}`;
     } finally {
       isCreatingPR = false;

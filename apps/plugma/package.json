@@ -1,4 +1,5 @@
 {
+	"name": "plugma",
 	"private": true,
 	"type": "module",
 	"scripts": {

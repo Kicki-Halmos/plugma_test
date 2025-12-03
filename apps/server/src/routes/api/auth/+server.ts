@@ -4,7 +4,31 @@ import { App } from 'octokit';
 import { GITHUB_APP_ID, GITHUB_APP_PRIVATE_KEY } from '$env/static/private';
 
 const APP_ID = GITHUB_APP_ID;
-const PRIVATE_KEY = GITHUB_APP_PRIVATE_KEY?.replace(/\\n/g, '\n');
+let PRIVATE_KEY = GITHUB_APP_PRIVATE_KEY;
+
+if (PRIVATE_KEY) {
+	// 1. Handle literal \n (e.g. "Line1\nLine2")
+	if (PRIVATE_KEY.includes('\\n')) {
+		PRIVATE_KEY = PRIVATE_KEY.replace(/\\n/g, '\n');
+	}
+
+	// 2. Handle single-line keys (e.g. "-----BEGIN... MII... ...END-----")
+	if (!PRIVATE_KEY.includes('\n')) {
+		console.log('Formatting single-line Private Key...');
+		PRIVATE_KEY = PRIVATE_KEY.replace(
+			'-----BEGIN RSA PRIVATE KEY-----',
+			'-----BEGIN RSA PRIVATE KEY-----\n'
+		).replace('-----END RSA PRIVATE KEY-----', '\n-----END RSA PRIVATE KEY-----');
+
+		// If the body still has spaces, replace them with newlines
+		const parts = PRIVATE_KEY.split('\n');
+		if (parts.length >= 3) {
+			// parts[1] is the body
+			parts[1] = parts[1].replace(/ /g, '\n');
+			PRIVATE_KEY = parts.join('\n');
+		}
+	}
+}
 
 // OPTIONS: Handle CORS preflight requests
 export const OPTIONS: RequestHandler = async () => {
@@ -67,6 +91,18 @@ export const POST: RequestHandler = (async ({ request }) => {
 			}
 		);
 	}
+
+	// Debug Private Key Format (without revealing secrets)
+	console.log('--- Private Key Debug ---');
+	console.log('Length:', PRIVATE_KEY.length);
+	console.log('Contains literal \\n:', GITHUB_APP_PRIVATE_KEY?.includes('\\n'));
+	console.log('Contains actual newline:', PRIVATE_KEY.includes('\n'));
+	console.log(
+		'Starts with Header:',
+		PRIVATE_KEY.trim().startsWith('-----BEGIN RSA PRIVATE KEY-----')
+	);
+	console.log('Ends with Footer:', PRIVATE_KEY.trim().endsWith('-----END RSA PRIVATE KEY-----'));
+	console.log('-------------------------');
 
 	try {
 		const app = new App({
