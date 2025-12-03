@@ -24,7 +24,7 @@
 	"plugma": {
 		"manifest": {
 			"id": "variables-sync-plugin",
-			"name": "plugma_test",
+			"name": "variables-sync-plugin",
 			"main": "src/main.ts",
 			"ui": "src/ui.ts",
 			"editorType": [
